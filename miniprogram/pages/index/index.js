@@ -16,7 +16,22 @@ Page({
   },
 
   onLoad() {
-    this.loadBooks();
+    // 先测试云开发是否正常
+    wx.cloud.callFunction({
+      name: 'parseDoubanBook',
+      data: { url: 'https://book.douban.com/subject/37077202/' },
+      success: (res) => {
+        console.log('云函数测试成功:', res);
+        wx.showToast({ title: '云开发连接正常', icon: 'success' });
+        this.loadBooks();
+      },
+      fail: (err) => {
+        console.error('云函数测试失败:', err);
+        wx.showToast({ title: '云开发连接失败: ' + err.errMsg, icon: 'none', duration: 5000 });
+        // 即使失败也尝试加载
+        this.loadBooks();
+      },
+    });
   },
 
   onShow() {
