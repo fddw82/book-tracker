@@ -1,0 +1,73 @@
+<!-- pages/profile/profile.wxml -->
+<view class="container">
+  <!-- 用户信息 -->
+  <view class="user-card card">
+    <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill" />
+    </button>
+    <view class="user-info">
+      <input
+        class="nickname-input"
+        type="nickname"
+        placeholder="点击设置昵称"
+        value="{{nickname}}"
+        bindblur="onNicknameBlur"
+      />
+      <view class="user-desc">记录阅读，发现好书</view>
+    </view>
+  </view>
+
+  <!-- 阅读统计 -->
+  <view class="stats-section">
+    <view class="section-title">📊 阅读统计</view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <view class="stat-number">{{stats.total || 0}}</view>
+        <view class="stat-label">全部藏书</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-number wish">{{stats.wish || 0}}</view>
+        <view class="stat-label">想读</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-number reading">{{stats.reading || 0}}</view>
+        <view class="stat-label">在读</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-number read">{{stats.read || 0}}</view>
+        <view class="stat-label">已读</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 已读书籍评分分布 -->
+  <view class="rating-dist card" wx:if="{{stats.read > 0}}">
+    <view class="section-title">⭐ 已读书籍评分</view>
+    <view class="dist-bars">
+      <view class="dist-row" wx:for="{{ratingDist}}" wx:key="star">
+        <text class="dist-label">{{item.star}}星</text>
+        <view class="dist-bar-wrap">
+          <view class="dist-bar" style="width: {{item.percent}}%"></view>
+        </view>
+        <text class="dist-count">{{item.count}}本</text>
+      </view>
+    </view>
+    <view class="avg-rating" wx:if="{{avgRating > 0}}">
+      平均评分: <text class="avg-value">{{avgRating}}</text> / 5
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="about-section card">
+    <view class="section-title">ℹ️ 关于</view>
+    <view class="about-item">
+      <text>我的书架 v1.0.0</text>
+    </view>
+    <view class="about-item">
+      <text>基于微信云开发 · 原生小程序</text>
+    </view>
+    <view class="about-item">
+      <text>图书数据来源于豆瓣 (douban.com)</text>
+    </view>
+  </view>
+</view>

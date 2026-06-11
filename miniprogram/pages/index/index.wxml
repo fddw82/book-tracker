@@ -1,0 +1,42 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+  <!-- 状态筛选栏 -->
+  <view class="filter-bar">
+    <view
+      wx:for="{{filters}}"
+      wx:key="value"
+      class="filter-item {{currentFilter === item.value ? 'active' : ''}}"
+      bindtap="onFilterTap"
+      data-value="{{item.value}}"
+    >
+      {{item.label}}
+      <text class="filter-count" wx:if="{{item.count > 0}}">({{item.count}})</text>
+    </view>
+  </view>
+
+  <!-- 图书列表 -->
+  <view class="book-list" wx:if="{{books.length > 0}}">
+    <book-card
+      wx:for="{{books}}"
+      wx:key="_id"
+      book="{{item}}"
+      bind:tap="onBookTap"
+    />
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <text class="empty-icon">📚</text>
+    <text class="empty-text">
+      {{currentFilter === 'all' ? '书架空空如也' : '暂无此类图书'}}
+    </text>
+    <text class="empty-sub-text">
+      去「添加」页面，粘贴豆瓣链接添加你的第一本书吧～
+    </text>
+  </view>
+
+  <!-- 浮动添加按钮 -->
+  <view class="fab" bindtap="onAddTap">
+    <text class="fab-icon">+</text>
+  </view>
+</view>

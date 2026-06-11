@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "book-card": "/components/book-card/book-card"
+  },
+  "enablePullDownRefresh": true,
+  "navigationBarTitleText": "我的书架"
+}

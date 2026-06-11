@@ -1,0 +1,9 @@
+{
+  "name": "parseDoubanBook",
+  "version": "1.0.0",
+  "description": "解析豆瓣图书页面获取书籍信息",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
+  }
+}

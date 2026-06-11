@@ -1,0 +1,195 @@
+/* pages/add/add.wxss */
+
+.input-section {
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.url-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.clear-btn {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  font-size: 28rpx;
+  flex-shrink: 0;
+}
+
+.parse-btn {
+  width: 100%;
+}
+
+/* 错误提示 */
+.error-msg {
+  background: #FFF3E0;
+  color: #E65100;
+  font-size: 26rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 图书预览 */
+.book-preview {
+  display: flex;
+  margin-bottom: 24rpx;
+}
+
+.preview-cover {
+  width: 180rpx;
+  height: 250rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  margin-right: 24rpx;
+  background: #f0f0f0;
+}
+
+.preview-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.preview-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.3;
+  margin-bottom: 4rpx;
+}
+
+.preview-subtitle {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.preview-author {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 6rpx;
+}
+
+.preview-meta {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 4rpx;
+}
+
+/* 豆瓣评分 */
+.douban-rating {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #f0f0f0;
+  border-bottom: 1rpx solid #f0f0f0;
+  margin-bottom: 20rpx;
+}
+
+.rating-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-right: 12rpx;
+}
+
+.rating-star {
+  color: #FF9800;
+  font-size: 28rpx;
+  margin-right: 6rpx;
+}
+
+.rating-score {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #FF9800;
+  margin-right: 8rpx;
+}
+
+.rating-total {
+  font-size: 24rpx;
+  color: #bbb;
+}
+
+/* 简介 */
+.preview-summary {
+  margin-bottom: 24rpx;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.summary-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* 状态选择 */
+.status-select {
+  margin-bottom: 32rpx;
+}
+
+.status-options {
+  display: flex;
+  gap: 16rpx;
+}
+
+.status-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 0;
+  border-radius: 12rpx;
+  border: 2rpx solid #eee;
+  transition: all 0.2s;
+}
+
+.status-option.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+
+.status-icon {
+  font-size: 40rpx;
+  margin-bottom: 8rpx;
+}
+
+.status-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.status-option.active .status-label {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 确认按钮 */
+.confirm-btn {
+  width: 100%;
+}

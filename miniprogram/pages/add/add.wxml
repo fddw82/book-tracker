@@ -1,0 +1,103 @@
+<!-- pages/add/add.wxml -->
+<view class="container">
+  <!-- 输入区域 -->
+  <view class="input-section card">
+    <view class="section-title">📎 粘贴豆瓣图书链接</view>
+    <view class="input-wrap">
+      <input
+        class="url-input"
+        placeholder="https://book.douban.com/subject/..."
+        value="{{inputUrl}}"
+        bindinput="onUrlInput"
+        bindconfirm="onParseTap"
+        confirm-type="search"
+        adjust-position
+      />
+      <view class="clear-btn" wx:if="{{inputUrl}}" bindtap="onClearTap">✕</view>
+    </view>
+    <button class="parse-btn btn-primary" bindtap="onParseTap" loading="{{parsing}}" disabled="{{!inputUrl || parsing}}">
+      {{parsing ? '解析中...' : '解析图书信息'}}
+    </button>
+  </view>
+
+  <!-- 错误提示 -->
+  <view class="error-msg card" wx:if="{{errorMsg}}">
+    <text>⚠️ {{errorMsg}}</text>
+  </view>
+
+  <!-- 解析结果 - 图书信息卡片 -->
+  <view class="result-card card" wx:if="{{bookData.title}}">
+    <view class="section-title">📖 图书信息</view>
+
+    <!-- 封面 + 基本信息 -->
+    <view class="book-preview">
+      <image
+        class="preview-cover"
+        src="{{bookData.cover || '/images/default-cover.png'}}"
+        mode="aspectFill"
+      />
+      <view class="preview-info">
+        <view class="preview-title">{{bookData.title}}</view>
+        <view class="preview-subtitle" wx:if="{{bookData.subtitle}}">
+          {{bookData.subtitle}}
+        </view>
+        <view class="preview-author">作者: {{bookData.author || '未知'}}</view>
+        <view class="preview-meta" wx:if="{{bookData.publisher}}">
+          出版社: {{bookData.publisher}}
+        </view>
+        <view class="preview-meta" wx:if="{{bookData.pubDate}}">
+          出版: {{bookData.pubDate}}
+        </view>
+        <view class="preview-meta" wx:if="{{bookData.pages}}">
+          页数: {{bookData.pages}}
+        </view>
+        <view class="preview-meta" wx:if="{{bookData.price}}">
+          定价: {{bookData.price}}元
+        </view>
+        <view class="preview-meta" wx:if="{{bookData.isbn}}">
+          ISBN: {{bookData.isbn}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 豆瓣评分 -->
+    <view class="douban-rating" wx:if="{{bookData.rating}}">
+      <text class="rating-label">豆瓣评分</text>
+      <text class="rating-star">★</text>
+      <text class="rating-score">{{bookData.rating}}</text>
+      <text class="rating-total" wx:if="{{bookData.ratingCount}}">
+        ({{bookData.ratingCount}}人评价)
+      </text>
+    </view>
+
+    <!-- 简介 -->
+    <view class="preview-summary" wx:if="{{bookData.summary}}">
+      <view class="summary-label">内容简介</view>
+      <view class="summary-text text-ellipsis-2">
+        {{bookData.summary}}
+      </view>
+    </view>
+
+    <!-- 选择阅读状态 -->
+    <view class="status-select">
+      <view class="section-title">📌 选择阅读状态</view>
+      <view class="status-options">
+        <view
+          wx:for="{{statusOptions}}"
+          wx:key="value"
+          class="status-option {{selectedStatus === item.value ? 'active' : ''}}"
+          bindtap="onStatusTap"
+          data-status="{{item.value}}"
+        >
+          <text class="status-icon">{{item.icon}}</text>
+          <text class="status-label">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 确认添加按钮 -->
+    <button class="confirm-btn btn-primary" bindtap="onConfirmTap" loading="{{saving}}" disabled="{{saving}}">
+      {{saving ? '添加中...' : '确认添加'}}
+    </button>
+  </view>
+</view>

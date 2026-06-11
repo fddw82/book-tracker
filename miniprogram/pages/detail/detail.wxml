@@ -1,0 +1,117 @@
+<!-- pages/detail/detail.wxml -->
+<view class="container" wx:if="{{book}}">
+  <!-- 封面 + 基本信息 -->
+  <view class="book-header card">
+    <image
+      class="header-cover"
+      src="{{book.cover || '/images/default-cover.png'}}"
+      mode="aspectFill"
+    />
+    <view class="header-info">
+      <view class="header-title">{{book.title}}</view>
+      <view class="header-subtitle" wx:if="{{book.subtitle}}">{{book.subtitle}}</view>
+      <view class="header-author">{{book.author || '未知作者'}}</view>
+
+      <view class="header-meta-list">
+        <text wx:if="{{book.publisher}}">{{book.publisher}}</text>
+        <text wx:if="{{book.pubDate}}">{{book.pubDate}}</text>
+        <text wx:if="{{book.pages}}">{{book.pages}}页</text>
+        <text wx:if="{{book.price}}">{{book.price}}元</text>
+      </view>
+
+      <!-- 豆瓣评分 -->
+      <view class="header-rating" wx:if="{{book.rating}}">
+        <text class="rating-star">★</text>
+        <text class="rating-value">{{book.rating}}</text>
+        <text class="rating-count" wx:if="{{book.ratingCount}}">
+          ({{book.ratingCount}}人评价)
+        </text>
+      </view>
+
+      <!-- 状态标签 -->
+      <view class="header-status {{statusClass}}">
+        {{statusLabel}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 阅读状态修改 -->
+  <view class="status-section card">
+    <view class="section-title">📌 修改阅读状态</view>
+    <view class="status-switch">
+      <view
+        wx:for="{{statusOptions}}"
+        wx:key="value"
+        class="status-btn {{book.status === item.value ? 'active' : ''}}"
+        bindtap="onStatusChange"
+        data-status="{{item.value}}"
+      >
+        <text>{{item.icon}} {{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的评分 -->
+  <view class="rating-section card">
+    <view class="section-title">⭐ 我的评分</view>
+    <view class="user-rating">
+      <text
+        wx:for="{{[1,2,3,4,5]}}"
+        wx:key="*this"
+        class="star {{item <= book.rating_user ? 'star-active' : ''}}"
+        bindtap="onRatingTap"
+        data-rating="{{item}}"
+      >★</text>
+      <text class="rating-hint" wx:if="{{book.rating_user > 0}}">
+        {{book.rating_user}}分
+      </text>
+    </view>
+  </view>
+
+  <!-- 我的短评 -->
+  <view class="comment-section card">
+    <view class="section-title">💬 我的短评</view>
+    <textarea
+      class="comment-input"
+      placeholder="写下你对这本书的看法..."
+      value="{{book.comment}}"
+      bindblur="onCommentBlur"
+      maxlength="350"
+      auto-height
+    />
+    <view class="comment-count">{{commentLength}}/350</view>
+  </view>
+
+  <!-- 内容简介 -->
+  <view class="summary-section card" wx:if="{{book.summary}}">
+    <view class="section-title">📝 内容简介</view>
+    <view class="summary-text">{{book.summary}}</view>
+  </view>
+
+  <!-- 其他信息 -->
+  <view class="info-section card">
+    <view class="section-title">📋 详细信息</view>
+    <view class="info-item" wx:if="{{book.isbn}}">
+      <text class="info-label">ISBN</text>
+      <text class="info-value">{{book.isbn}}</text>
+    </view>
+    <view class="info-item" wx:if="{{book.binding}}">
+      <text class="info-label">装帧</text>
+      <text class="info-value">{{book.binding}}</text>
+    </view>
+    <view class="info-item" wx:if="{{book.doubanUrl}}">
+      <text class="info-label">豆瓣链接</text>
+      <text class="info-value link" bindtap="onOpenDouban">在豆瓣查看 →</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <button class="delete-btn" bindtap="onDeleteTap">删除此书</button>
+  </view>
+</view>
+
+<!-- 加载中 -->
+<view class="loading" wx:else>
+  <text>加载中...</text>
+</view>

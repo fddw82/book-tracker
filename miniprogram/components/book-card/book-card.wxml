@@ -1,0 +1,42 @@
+<!-- components/book-card/book-card.wxml -->
+<view class="book-card" bindtap="onTap">
+  <!-- 封面 -->
+  <view class="book-cover-wrap">
+    <image
+      class="book-cover"
+      src="{{book.cover || '/images/default-cover.png'}}"
+      mode="aspectFill"
+      lazy-load
+    />
+    <!-- 状态标签 -->
+    <view class="status-tag {{statusClass}}">
+      {{statusLabel}}
+    </view>
+  </view>
+
+  <!-- 信息 -->
+  <view class="book-info">
+    <view class="book-title text-ellipsis-2">{{book.title}}</view>
+    <view class="book-author text-ellipsis">{{book.author || '未知作者'}}</view>
+
+    <!-- 评分 -->
+    <view class="book-rating" wx:if="{{book.rating}}">
+      <text class="rating-star">★</text>
+      <text class="rating-value">{{book.rating}}</text>
+      <text class="rating-count" wx:if="{{book.ratingCount}}">({{book.ratingCount}}人)</text>
+    </view>
+
+    <!-- 用户评星 -->
+    <view class="book-user-rating" wx:if="{{book.rating_user > 0}}">
+      <text class="my-star">我的评分: </text>
+      <block wx:for="{{[1,2,3,4,5]}}" wx:key="*this">
+        <text class="{{item <= book.rating_user ? 'star-on' : 'star-off'}}">★</text>
+      </block>
+    </view>
+
+    <!-- 添加日期 -->
+    <view class="book-date" wx:if="{{book.readDate}}">
+      读完于 {{book.readDateStr}}
+    </view>
+  </view>
+</view>
