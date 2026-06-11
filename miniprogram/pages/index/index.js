@@ -47,10 +47,9 @@ Page({
         where.status = currentFilter;
       }
 
-      // 查询当前筛选的图书
+      // 查询当前筛选的图书（先不加排序，避免索引问题）
       const res = await db.collection('books')
         .where(where)
-        .orderBy('createdAt', 'desc')
         .get();
 
       this.setData({ books: res.data });
