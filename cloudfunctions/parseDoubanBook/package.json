@@ -4,6 +4,7 @@
   "description": "解析豆瓣图书页面获取书籍信息",
   "main": "index.js",
   "dependencies": {
+    "wx-server-sdk": "latest",
     "cheerio": "^1.0.0-rc.12"
   }
 }
