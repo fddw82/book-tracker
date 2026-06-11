@@ -16,8 +16,8 @@ exports.main = async (event, context) => {
     return { success: false, error: '请提供豆瓣图书链接' };
   }
 
-  // 提取豆瓣 ID
-  const idMatch = url.match(/subject\/(\d+)/);
+  // 提取豆瓣 ID（支持 /subject/123 和 /book/123 两种格式）
+  const idMatch = url.match(/(?:subject|book)\/(\d+)/);
   if (!idMatch) {
     return { success: false, error: '无法识别的豆瓣链接格式' };
   }

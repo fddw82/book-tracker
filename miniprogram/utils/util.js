@@ -22,11 +22,15 @@ function formatDate(date, format = 'YYYY-MM-DD') {
 
 /**
  * 提取豆瓣 subject ID
+ * 支持格式:
+ * - https://book.douban.com/subject/37077202/
+ * - https://www.douban.com/doubanapp/dispatch/book/37077202
  * @param {string} url
  * @returns {string|null}
  */
 function extractDoubanId(url) {
-  const match = url.match(/subject\/(\d+)/);
+  // 匹配 /subject/123456 或 /book/123456
+  const match = url.match(/(?:subject|book)\/(\d+)/);
   return match ? match[1] : null;
 }
 
@@ -36,7 +40,7 @@ function extractDoubanId(url) {
  * @returns {boolean}
  */
 function isDoubanBookUrl(url) {
-  return /douban\.com\/.+\/subject\/\d+/.test(url);
+  return /douban\.com\/.+\/(?:subject|book)\/\d+/.test(url);
 }
 
 /**
