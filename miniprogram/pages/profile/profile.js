@@ -31,28 +31,26 @@ Page({
   },
 
   /**
-   * 加载阅读统计
+   * 加载阅读统计（前端统计，避免 count() 超时）
    */
   async loadStats() {
     try {
-      const stats = { total: 0, wish: 0, reading: 0, read: 0 };
+      // 一次性获取所有书籍，前端统计
+      const res = await db.collection('books').get();
+      const books = res.data || [];
 
-      // 总数
-      const totalRes = await db.collection('books').count();
-      stats.total = totalRes.total;
-
-      // 各状态统计
-      const statuses = ['wish', 'reading', 'read'];
-      for (const s of statuses) {
-        const res = await db.collection('books').where({ status: s }).count();
-        stats[s] = res.total;
-      }
+      const stats = { total: books.length, wish: 0, reading: 0, read: 0 };
+      books.forEach(book => {
+        if (stats[book.status] !== undefined) {
+          stats[book.status]++;
+        }
+      });
 
       this.setData({ stats });
 
       // 已读评分分布
       if (stats.read > 0) {
-        await this.loadRatingDist();
+        this.calcRatingDist(books);
       }
     } catch (err) {
       console.error('加载统计失败:', err);
@@ -60,49 +58,36 @@ Page({
   },
 
   /**
-   * 加载已读书籍评分分布
+   * 计算已读书籍评分分布（前端计算）
    */
-  async loadRatingDist() {
-    try {
-      // 读取所有已读且已评分的书籍
-      const res = await db.collection('books')
-        .where({
-          status: 'read',
-          rating_user: _.gt(0),
-        })
-        .field({ rating_user: true })
-        .get();
+  calcRatingDist(books) {
+    const readBooks = books.filter(b => b.status === 'read' && b.rating_user > 0);
 
-      const dist = [0, 0, 0, 0, 0]; // 1-5星
-      let totalRating = 0;
-      let ratedCount = 0;
+    const dist = [0, 0, 0, 0, 0]; // 1-5星
+    let totalRating = 0;
 
-      res.data.forEach(book => {
-        if (book.rating_user >= 1 && book.rating_user <= 5) {
-          dist[book.rating_user - 1]++;
-          totalRating += book.rating_user;
-          ratedCount++;
-        }
-      });
+    readBooks.forEach(book => {
+      if (book.rating_user >= 1 && book.rating_user <= 5) {
+        dist[book.rating_user - 1]++;
+        totalRating += book.rating_user;
+      }
+    });
 
-      const maxCount = Math.max(...dist, 1);
-      const ratingDist = [5, 4, 3, 2, 1].map(star => {
-        const count = dist[star - 1];
-        return {
-          star,
-          count,
-          percent: Math.round((count / maxCount) * 100),
-        };
-      });
+    const maxCount = Math.max(...dist, 1);
+    const ratingDist = [5, 4, 3, 2, 1].map(star => {
+      const count = dist[star - 1];
+      return {
+        star,
+        count,
+        percent: Math.round((count / maxCount) * 100),
+      };
+    });
 
-      const avgRating = ratedCount > 0
-        ? (totalRating / ratedCount).toFixed(1)
-        : 0;
+    const avgRating = readBooks.length > 0
+      ? (totalRating / readBooks.length).toFixed(1)
+      : 0;
 
-      this.setData({ ratingDist, avgRating });
-    } catch (err) {
-      console.error('加载评分分布失败:', err);
-    }
+    this.setData({ ratingDist, avgRating });
   },
 
   /**
