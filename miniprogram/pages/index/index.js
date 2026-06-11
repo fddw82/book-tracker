@@ -83,31 +83,26 @@ Page({
   },
 
   /**
-   * 加载各状态数量统计
+   * 加载各状态数量统计（前端统计，避免 count() 超时）
    */
-  async loadCounts() {
-    try {
-      const counts = {};
-      const statuses = ['wish', 'reading', 'read'];
+  loadCounts() {
+    const { books } = this.data;
+    const counts = { wish: 0, reading: 0, read: 0 };
 
-      for (const status of statuses) {
-        const res = await db.collection('books')
-          .where({ status })
-          .count();
-        counts[status] = res.total;
+    books.forEach(book => {
+      if (counts[book.status] !== undefined) {
+        counts[book.status]++;
       }
+    });
 
-      const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    const total = books.length;
 
-      const filters = this.data.filters.map(f => ({
-        ...f,
-        count: f.value === 'all' ? total : (counts[f.value] || 0),
-      }));
+    const filters = this.data.filters.map(f => ({
+      ...f,
+      count: f.value === 'all' ? total : (counts[f.value] || 0),
+    }));
 
-      this.setData({ filters });
-    } catch (err) {
-      console.error('统计失败:', err);
-    }
+    this.setData({ filters });
   },
 
   /**
